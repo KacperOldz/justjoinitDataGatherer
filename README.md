@@ -19,13 +19,13 @@ This Python script scrapes job data from the JustJoin.it website based on specif
 1. Clone this repository:
 
 ```bash
-git clone https://github.com/your-username/justjoinit-scraper.git
+git clone https://github.com/KacperOldz/justjoinitDataGatherer
 ```
 
 2. Navigate to the project directory:
 
 ```bash
-cd justjoinit-scraper
+cd justjoinitDataGatherer
 ```
 
 3. Install dependencies:
