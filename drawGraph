@@ -1,0 +1,26 @@
+import matplotlib.pyplot as plt
+
+data = []
+colors = ["orange", "yellow", "blue"]
+
+def drawGraph():
+    for j in range(0, len(colors)):
+        x = [num for num in range(0,len(data))]
+        y = [line[j] for line in data]
+        for i in range(0, len(data) - 1):
+            plt.plot(x, y, color=colors[j])
+    plt.show()
+def readData(fileName):
+    with open(fileName + '.txt', 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            elements = line.split()
+            data.append([int(num) for num in elements[1:len(elements)]])
+
+def main():
+    readData("bialystok")
+    drawGraph()
+    print(data)
+
+if __name__ == '__main__':
+    main()
