@@ -1,21 +1,27 @@
 import matplotlib.pyplot as plt
+from datetime import datetime
+
 
 data = []
-colors = ["orange", "yellow", "blue"]
+colors = ["orange", "yellow", "blue", '#4F88EC', '#7C1EBA', '#73D04F']
+languages = ['java', 'js', 'python', 'go', '.net', 'mobile']
 
 def drawGraph():
     for j in range(0, len(colors)):
-        x = [num for num in range(0,len(data))]
-        y = [line[j] for line in data]
-        for i in range(0, len(data) - 1):
-            plt.plot(x, y, color=colors[j])
+        x = [datetime.strptime(line[0], "%Y-%m-%d") for line in data]
+        y = [int(line[j+1]) for line in data]
+        plt.plot(x, y, color=colors[j], label=languages[j])
+    plt.xlabel('Date')
+    plt.ylabel('Amount')
+    plt.xticks(rotation=45)
+    plt.legend()
     plt.show()
 def readData(fileName):
     with open(fileName + '.txt', 'r') as file:
         lines = file.readlines()
         for line in lines:
             elements = line.split()
-            data.append([int(num) for num in elements[1:len(elements)]])
+            data.append([num for num in elements[0:len(elements)]])
 
 def main():
     readData("bialystok")
