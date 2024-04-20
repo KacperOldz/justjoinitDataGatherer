@@ -1,10 +1,16 @@
 import matplotlib.pyplot as plt
 from datetime import datetime
-
+import os
+import json
 
 data = []
-colors = ["orange", "yellow", "blue", '#4F88EC', '#7C1EBA', '#73D04F']
-languages = ['java', 'js', 'python', 'go', '.net', 'mobile']
+
+with open('config.json', 'r') as file:
+    json_data = file.read()
+    config = json.loads(json_data)
+
+colors = [lang["color"] for lang in config["languages"]]
+languages = [lang["label"] for lang in config["languages"]]
 
 def drawGraph():
     for j in range(0, len(colors)):
@@ -17,16 +23,23 @@ def drawGraph():
     plt.legend()
     plt.show()
 def readData(fileName):
-    with open(fileName + '.txt', 'r') as file:
+    with open(fileName, 'r') as file:
         lines = file.readlines()
         for line in lines:
             elements = line.split()
             data.append([num for num in elements[0:len(elements)]])
 
 def main():
-    readData("bialystok")
-    drawGraph()
-    print(data)
+    global data
+    contin = True
+    while (contin):
+        data = []
+        txt_files = [file for file in os.listdir('./') if file.endswith('.txt')]
+        for i in range(0, len(txt_files)):
+            print(str(i) + ". " + txt_files[i])
+        index = input(":")
+        readData(txt_files[int(index)])
+        drawGraph()
 
 if __name__ == '__main__':
     main()
