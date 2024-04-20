@@ -29,17 +29,28 @@ def readData(fileName):
             elements = line.split()
             data.append([num for num in elements[0:len(elements)]])
 
+
 def main():
     global data
     contin = True
-    while (contin):
+    while contin:
         data = []
         txt_files = [file for file in os.listdir('./') if file.endswith('.txt')]
-        for i in range(0, len(txt_files)):
-            print(str(i) + ". " + txt_files[i])
-        index = input(":")
-        readData(txt_files[int(index)])
-        drawGraph()
+        for i, txt_file in enumerate(txt_files):
+            print(f"{i}. {txt_file}")
+
+        while True:
+            try:
+                index = int(input("Enter the index of the file you want to read: "))
+                if 0 <= index < len(txt_files):
+                    readData(txt_files[index])
+                    drawGraph()
+                    break
+                else:
+                    print("Invalid index. Please enter a valid number.")
+            except ValueError:
+                print("Invalid input. Please enter a valid number.")
+
 
 if __name__ == '__main__':
     main()
