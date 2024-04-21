@@ -12,10 +12,10 @@ with open('config.json', 'r') as file:
 colors = [lang["color"] for lang in config["languages"]]
 languages = [lang["label"] for lang in config["languages"]]
 
-def drawGraph():
+def drawGraph(offset = 0):
     for j in range(0, len(colors)):
         x = [datetime.strptime(line[0], "%Y-%m-%d") for line in data]
-        y = [int(line[j+1]) for line in data]
+        y = [int(line[j+1 + offset*len(colors)]) for line in data]
         plt.plot(x, y, color=colors[j], label=languages[j])
     plt.xlabel('Date')
     plt.ylabel('Amount')
@@ -36,6 +36,7 @@ def main():
     while contin:
         data = []
         txt_files = [file for file in os.listdir('./') if file.endswith('.txt')]
+        print("Execution")
         for i, txt_file in enumerate(txt_files):
             print(f"{i}. {txt_file}")
 
@@ -44,7 +45,8 @@ def main():
                 index = int(input("Enter the index of the file you want to read: "))
                 if 0 <= index < len(txt_files):
                     readData(txt_files[index])
-                    drawGraph()
+                    offset = int(input("Which filter do want to use?: "))
+                    drawGraph(offset)
                     break
                 else:
                     print("Invalid index. Please enter a valid number.")
