@@ -3,13 +3,15 @@ from bs4 import BeautifulSoup
 import datetime
 import re
 import json
+import os
 
 BASE_URL = "https://justjoin.it"
 EXPERIENCE = ["/", "/experience-level_junior?index=0#more-filters"]
+actualDir = "./"
 
 def readInfo():
     global LOCATIONS, TECHS
-    with open('config.json', 'r') as file:
+    with open(actualDir + 'config.json', 'r') as file:
         json_data = file.read()
         data = json.loads(json_data)
     LOCATIONS = data["locations"]
@@ -45,9 +47,7 @@ def save_data_to_file(content, filename):
     with open(filename, 'at') as file:
         file.write(content)
 
-def main():
-    """Main function to scrape data and save it."""
-    readInfo()
+def getAndSaveData():
     for location in LOCATIONS:
         description = "\n" + datetime.datetime.now().strftime("%Y-%m-%d")
         for experience_level in EXPERIENCE:
@@ -60,11 +60,26 @@ def main():
                     if element_content:
                         description += " " + element_content
                     else:
-                        print("Element content not found.")
+                        description += " " + "0"
                 else:
                     print("Failed to fetch page content.")
 
-        save_data_to_file(description, location[1:] + ".txt")
+        save_data_to_file(description, actualDir + location[1:] + ".txt")
+
+def selectSave():
+    global actualDir
+    folders = [folder for folder in os.listdir("./saves") if os.path.isdir(os.path.join("./saves", folder))]
+    for i in range(0, len(folders)):
+        print(str(i) + ". " + folders[i])
+    index = input("Select save: ")
+    actualDir = "./saves/" + folders[int(index)] + '/'
+
+def main():
+    """Main function to scrape data and save it."""
+    selectSave()
+    readInfo()
+    getAndSaveData()
+
 
 if __name__ == "__main__":
     main()
