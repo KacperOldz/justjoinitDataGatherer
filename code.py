@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-import datetime
+from datetime import datetime
+import matplotlib.pyplot as plt
 import re
 import json
 import os
@@ -8,8 +9,9 @@ import os
 BASE_URL = "https://justjoin.it"
 EXPERIENCE = ["/", "/experience-level_junior?index=0#more-filters"]
 actualDir = "./"
+data = []
 
-def readInfo():
+def getDesiredLanguagesTechsAndExperience():
     global LOCATIONS, TECHS
     with open(actualDir + 'config.json', 'r') as file:
         json_data = file.read()
@@ -17,6 +19,7 @@ def readInfo():
     LOCATIONS = data["locations"]
     print(LOCATIONS)
     TECHS = [lang["link"] for lang in data["languages"]]
+
 def extract_numbers_from_string(input_string):
     """Extracts numbers from a string."""
     numbers = re.findall(r'\d+', input_string)
@@ -47,7 +50,7 @@ def save_data_to_file(content, filename):
     with open(filename, 'at') as file:
         file.write(content)
 
-def getAndSaveData():
+def getAndSaveDataFromWebside():
     for location in LOCATIONS:
         description = "\n" + datetime.datetime.now().strftime("%Y-%m-%d")
         for experience_level in EXPERIENCE:
@@ -74,11 +77,64 @@ def selectSave():
     index = input("Select save: ")
     actualDir = "./saves/" + folders[int(index)] + '/'
 
+def getGraphColorsAndLabels():
+    global colors, languages
+    with open(actualDir + 'config.json', 'r') as file:
+        json_data = file.read()
+        config = json.loads(json_data)
+
+    colors = [lang["color"] for lang in config["languages"]]
+    languages = [lang["label"] for lang in config["languages"]]
+
+def drawGraph():
+    for j in range(0, len(colors)):
+        x = [datetime.strptime(line[0], "%Y-%m-%d") for line in data]
+        y = [int(line[j+1]) for line in data]
+        plt.plot(x, y, color=colors[j], label=languages[j])
+    plt.xlabel('Date')
+    plt.ylabel('Amount')
+    plt.xticks(rotation=45)
+    plt.legend()
+    plt.show()
+def readData(fileName):
+    with open(fileName, 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            elements = line.split()
+            data.append([num for num in elements[0:len(elements)]])
+
+def drawGraphForDesiredDataFile():
+    global data
+    txt_files = [file for file in os.listdir(actualDir) if file.endswith('.txt')]
+    for i, txt_file in enumerate(txt_files):
+        print(f"{i}. {txt_file}")
+    print("Colors: " + str(colors))
+    print("Languages: " + str(languages))
+
+    while True:
+        try:
+            index = int(input("Enter the index of the file you want to read: "))
+            if 0 <= index < len(txt_files):
+                readData(txt_files[index])
+                drawGraph()
+                break
+            else:
+                print("Invalid index. Please enter a valid number.")
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
+
 def main():
     """Main function to scrape data and save it."""
-    selectSave()
-    readInfo()
-    getAndSaveData()
+    con = True
+    while con:
+        selectSave()
+        getDesiredLanguagesTechsAndExperience()
+        if int(input("Save or read?")) == 0:
+            getAndSaveDataFromWebside()
+        else:
+            getGraphColorsAndLabels()
+            drawGraphForDesiredDataFile()
+
 
 
 if __name__ == "__main__":
