@@ -7,18 +7,18 @@ import json
 import os
 
 BASE_URL = "https://justjoin.it"
-EXPERIENCE = ["/", "/experience-level_junior?index=0#more-filters"]
 actualDir = "./"
 data = []
 
 def getDesiredLanguagesTechsAndExperience():
-    global LOCATIONS, TECHS
+    global LOCATIONS, TECHS, EXPERIENCE
     with open(actualDir + 'config.json', 'r') as file:
         json_data = file.read()
         data = json.loads(json_data)
     LOCATIONS = data["locations"]
     print(LOCATIONS)
     TECHS = [lang["link"] for lang in data["languages"]]
+    EXPERIENCE = [filter["link"] for filter in data["filters"]]
 
 def extract_numbers_from_string(input_string):
     """Extracts numbers from a string."""
@@ -52,7 +52,7 @@ def save_data_to_file(content, filename):
 
 def getAndSaveDataFromWebside():
     for location in LOCATIONS:
-        description = "\n" + datetime.datetime.now().strftime("%Y-%m-%d")
+        description = "\n" + datetime.now().strftime("%Y-%m-%d")
         for experience_level in EXPERIENCE:
             for tech in TECHS:
                 url = BASE_URL + location + tech + experience_level
@@ -63,9 +63,9 @@ def getAndSaveDataFromWebside():
                     if element_content:
                         description += " " + element_content
                     else:
-                        description += " " + "0"
+                        description += " 0"
                 else:
-                    print("Failed to fetch page content.")
+                    description += " 0"
 
         save_data_to_file(description, actualDir + location[1:] + ".txt")
 
