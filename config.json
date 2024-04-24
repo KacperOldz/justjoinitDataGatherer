@@ -34,6 +34,10 @@
   "locations": [
     "/all-locations",
     "/bialystok"
+  ],
+  "filters": [
+    {"link":  "/experience-level_junior?index=0#more-filters", "label":  "junior"},
+    {"link":  "/", "label":  "basic"}
   ]
 
 }
