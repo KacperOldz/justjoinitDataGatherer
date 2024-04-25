@@ -1,4 +1,3 @@
-```
 # JustJoin.it Scraper
 
 This script scrapes job data from the JustJoin.it website based on predefined configurations and saves it to text files. It also provides functionality to visualize the scraped data using matplotlib.
@@ -28,7 +27,3 @@ This script scrapes job data from the JustJoin.it website based on predefined co
 - `config.json`: Configuration file.
 - `saves/`: Folder containing saved data files.
 - `README.md`: This file.
-
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
