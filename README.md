@@ -1,52 +1,34 @@
-# JustJoin.it Job Scraping Script
+```
+# JustJoin.it Scraper
 
-This Python script scrapes job data from the JustJoin.it website based on specified locations, technologies, and experience levels. It fetches information such as the number of job offers available for each combination of location, technology, and experience level and saves it to text files.
-
-## Features
-
-- Scrapes job data from JustJoin.it for specified locations, technologies, and experience levels.
-- Extracts the number of job offers available for each combination.
-- Saves the data to text files for further analysis.
+This script scrapes job data from the JustJoin.it website based on predefined configurations and saves it to text files. It also provides functionality to visualize the scraped data using matplotlib.
 
 ## Requirements
-
 - Python 3.x
-- `requests` library (to make HTTP requests)
-- `BeautifulSoup` library (for HTML parsing)
+- requests
+- BeautifulSoup4
+- matplotlib
+
+## Installation
+1. Clone the repository: `git clone https://github.com/your_username/justjoin-it-scraper.git`
+2. Install the required packages: `pip install -r requirements.txt`
 
 ## Usage
-
-1. Clone this repository:
-
-```bash
-git clone https://github.com/KacperOldz/justjoinitDataGatherer
-```
-
-2. Navigate to the project directory:
-
-```bash
-cd justjoinitDataGatherer
-```
-
-3. Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-4. Run the script:
-
-```bash
-python code.py
-```
+1. Run the `main.py` script: `python main.py`
+2. Select a save folder or create a new one.
+3. Choose whether to fetch and save data or read and visualize existing data.
+4. If fetching data, the script will scrape job data from JustJoin.it based on the configurations provided in `config.json` and save it to text files.
+5. If reading data, the script will prompt you to select a data file to visualize. It will then plot the data using matplotlib.
 
 ## Configuration
+- `config.json`: Contains configurations for the script, including locations, languages, filters, and colors for visualization.
 
-- Modify the `LOCATIONS`, `TECHS`, and `EXPERIENCE` lists in the `code.py` file to specify the desired locations, technologies, and experience levels for scraping job data.
-- Adjust the `BASE_URL` constant if the JustJoin.it website URL changes in the future.
+## File Structure
+- `main.py`: Main script file to run.
+- `config.json`: Configuration file.
+- `saves/`: Folder containing saved data files.
+- `README.md`: This file.
 
-## Files
-
-- `code.py`: The main Python script for scraping job data.
-- `requirements.txt`: A text file containing the required Python libraries.
-- `README.md`: This README file providing information about the script.
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+```
