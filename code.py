@@ -10,6 +10,18 @@ BASE_URL = "https://justjoin.it"
 actualDir = "./"
 data = []
 
+
+def checkIfInputIsRight(min, max, inputText="Select option:"):
+    while True:
+        try:
+            index = int(input(inputText))
+            if min <= index < max:
+                return index
+            else:
+                print("Invalid index. Please enter a valid number.")
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
+
 def getDesiredLanguagesTechsAndExperience():
     global LOCATIONS, TECHS, EXPERIENCE
     with open(actualDir + 'config.json', 'r') as file:
@@ -111,17 +123,9 @@ def drawGraphForDesiredDataFile():
     print("Colors: " + str(colors))
     print("Languages: " + str(languages))
 
-    while True:
-        try:
-            index = int(input("Enter the index of the file you want to read: "))
-            if 0 <= index < len(txt_files):
-                readData(txt_files[index])
-                drawGraph()
-                break
-            else:
-                print("Invalid index. Please enter a valid number.")
-        except ValueError:
-            print("Invalid input. Please enter a valid number.")
+    index = checkIfInputIsRight(0 , len(txt_files))
+    readData(txt_files[index])
+    drawGraph()
 
 def main():
     """Main function to scrape data and save it."""
