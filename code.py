@@ -86,7 +86,7 @@ def selectSave():
     folders = [folder for folder in os.listdir("./saves") if os.path.isdir(os.path.join("./saves", folder))]
     for i in range(0, len(folders)):
         print(str(i) + ". " + folders[i])
-    index = input("Select save: ")
+    index = checkIfInputIsRight(0, len(folders))
     actualDir = "./saves/" + folders[int(index)] + '/'
 
 def getGraphColorsAndLabels():
