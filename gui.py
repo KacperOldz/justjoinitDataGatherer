@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog
-import main
+import code
 
 actualDir = "./saves/save1"
 fileName = "all-locations.txt"
