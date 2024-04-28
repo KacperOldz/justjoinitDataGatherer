@@ -89,16 +89,17 @@ def selectSave():
     index = checkIfInputIsRight(0, len(folders))
     actualDir = "./saves/" + folders[int(index)] + '/'
 
-def getGraphColorsAndLabels():
+def getGraphColorsAndLabels(dir):
     global colors, languages
-    with open(actualDir + 'config.json', 'r') as file:
+    with open(dir, 'r') as file:
         json_data = file.read()
         config = json.loads(json_data)
 
     colors = [lang["color"] for lang in config["languages"]]
     languages = [lang["label"] for lang in config["languages"]]
+    return colors, languages
 
-def drawGraph():
+def drawGraph(colors, languages, data):
     for j in range(0, len(colors)):
         x = [datetime.strptime(line[0], "%Y-%m-%d") for line in data]
         y = [int(line[j+1]) for line in data]
@@ -108,23 +109,23 @@ def drawGraph():
     plt.xticks(rotation=45)
     plt.legend()
     plt.show()
+
 def readData(fileName):
+    data = []
     with open(fileName, 'r') as file:
         lines = file.readlines()
         for line in lines:
             elements = line.split()
             data.append([num for num in elements[0:len(elements)]])
+    return data
 
-def drawGraphForDesiredDataFile():
-    global data
+def drawGraphForDesiredDataFile(data):
     txt_files = [file for file in os.listdir(actualDir) if file.endswith('.txt')]
     for i, txt_file in enumerate(txt_files):
         print(f"{i}. {txt_file}")
     print("Colors: " + str(colors))
     print("Languages: " + str(languages))
 
-    index = checkIfInputIsRight(0 , len(txt_files))
-    readData(txt_files[index])
     drawGraph()
 
 def main():
