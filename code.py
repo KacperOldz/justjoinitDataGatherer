@@ -22,15 +22,15 @@ def checkIfInputIsRight(min, max, inputText="Select option:"):
         except ValueError:
             print("Invalid input. Please enter a valid number.")
 
-def getDesiredLanguagesTechsAndExperience():
-    global LOCATIONS, TECHS, EXPERIENCE
-    with open(actualDir + 'config.json', 'r') as file:
+def getDesiredLanguagesTechsAndExperience(configDir):
+    with open(configDir, 'r') as file:
         json_data = file.read()
         data = json.loads(json_data)
     LOCATIONS = data["locations"]
     print(LOCATIONS)
     TECHS = [lang["link"] for lang in data["languages"]]
     EXPERIENCE = [filter["link"] for filter in data["filters"]]
+    return LOCATIONS, TECHS, EXPERIENCE
 
 def extract_numbers_from_string(input_string):
     """Extracts numbers from a string."""
@@ -62,7 +62,7 @@ def save_data_to_file(content, filename):
     with open(filename, 'at') as file:
         file.write(content)
 
-def getAndSaveDataFromWebside():
+def getAndSaveDataFromWebside(LOCATIONS, TECHS, EXPERIENCE, actualDir):
     for location in LOCATIONS:
         description = "\n" + datetime.now().strftime("%Y-%m-%d")
         for experience_level in EXPERIENCE:
@@ -119,28 +119,3 @@ def readData(fileName):
             data.append([num for num in elements[0:len(elements)]])
     return data
 
-def drawGraphForDesiredDataFile(data):
-    txt_files = [file for file in os.listdir(actualDir) if file.endswith('.txt')]
-    for i, txt_file in enumerate(txt_files):
-        print(f"{i}. {txt_file}")
-    print("Colors: " + str(colors))
-    print("Languages: " + str(languages))
-
-    drawGraph()
-
-def main():
-    """Main function to scrape data and save it."""
-    con = True
-    while con:
-        selectSave()
-        getDesiredLanguagesTechsAndExperience()
-        if int(input("Save or read?")) == 0:
-            getAndSaveDataFromWebside()
-        else:
-            getGraphColorsAndLabels()
-            drawGraphForDesiredDataFile()
-
-
-
-if __name__ == "__main__":
-    main()
