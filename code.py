@@ -10,19 +10,11 @@ BASE_URL = "https://justjoin.it"
 actualDir = "./"
 data = []
 
-
-def checkIfInputIsRight(min, max, inputText="Select option:"):
-    while True:
-        try:
-            index = int(input(inputText))
-            if min <= index < max:
-                return index
-            else:
-                print("Invalid index. Please enter a valid number.")
-        except ValueError:
-            print("Invalid input. Please enter a valid number.")
-
 def getDesiredLanguagesTechsAndExperience(configDir):
+    """
+    :param configDir: Path to config.json file.
+    :return: Returns arrays containing LOCATIONS, TECHS and EXPERIENCE
+    """
     with open(configDir, 'r') as file:
         json_data = file.read()
         data = json.loads(json_data)
@@ -33,7 +25,10 @@ def getDesiredLanguagesTechsAndExperience(configDir):
     return LOCATIONS, TECHS, EXPERIENCE
 
 def extract_numbers_from_string(input_string):
-    """Extracts numbers from a string."""
+    """
+    :param input_string: String to extract number from.
+    :return: Returns number extracted from string.
+    """
     numbers = re.findall(r'\d+', input_string)
     return "".join(numbers)
 
@@ -63,6 +58,12 @@ def save_data_to_file(content, filename):
         file.write(content)
 
 def getAndSaveDataFromWebside(LOCATIONS, TECHS, EXPERIENCE, actualDir):
+    """
+    :param LOCATIONS: Array containing locations.
+    :param TECHS: Array containing techs.
+    :param EXPERIENCE: Array containing experience.
+    :param actualDir: Directory to save files in.
+    """
     for location in LOCATIONS:
         description = "\n" + datetime.now().strftime("%Y-%m-%d")
         for experience_level in EXPERIENCE:
@@ -81,16 +82,11 @@ def getAndSaveDataFromWebside(LOCATIONS, TECHS, EXPERIENCE, actualDir):
 
         save_data_to_file(description, actualDir + location[1:] + ".txt")
 
-def selectSave():
-    global actualDir
-    folders = [folder for folder in os.listdir("./saves") if os.path.isdir(os.path.join("./saves", folder))]
-    for i in range(0, len(folders)):
-        print(str(i) + ". " + folders[i])
-    index = checkIfInputIsRight(0, len(folders))
-    actualDir = "./saves/" + folders[int(index)] + '/'
-
 def getGraphColorsAndLabels(dir):
-    global colors, languages
+    """
+    :param dir: Directory containing directory to the json file
+    :return: Returns colors and languages arrays extracted from config.json
+    """
     with open(dir, 'r') as file:
         json_data = file.read()
         config = json.loads(json_data)
@@ -100,6 +96,11 @@ def getGraphColorsAndLabels(dir):
     return colors, languages
 
 def drawGraph(colors, languages, data):
+    """
+    :param colors: Colors array. 
+    :param languages: Languages array.
+    :param data: Data array.
+    """
     for j in range(0, len(colors)):
         x = [datetime.strptime(line[0], "%Y-%m-%d") for line in data]
         y = [int(line[j+1]) for line in data]
@@ -111,6 +112,10 @@ def drawGraph(colors, languages, data):
     plt.show()
 
 def readData(fileName):
+    """
+    :param fileName: Name of file to read data from 
+    :return: Returns data array
+    """
     data = []
     with open(fileName, 'r') as file:
         lines = file.readlines()
