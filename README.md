@@ -7,6 +7,7 @@ This script scrapes job data from the JustJoin.it website based on predefined co
 - requests
 - BeautifulSoup4
 - matplotlib
+- tkinter
 
 ## Installation
 1. Clone the repository: `git clone https://github.com/your_username/justjoin-it-scraper.git`
