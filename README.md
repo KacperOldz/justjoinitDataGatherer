@@ -1,6 +1,6 @@
 # JustJoin.it Scraper
 
-This script scrapes job data from the JustJoin.it website based on predefined configurations and saves it to text files. It also provides functionality to visualize the scraped data using matplotlib.
+This script scrapes job data from the JustJoin.it website based on predefined configurations and saves it to text files. It also provides functionality to visualize the scraped data using matplotlib. GUI is built in Twitter. 
 
 ## Requirements
 - Python 3.x
