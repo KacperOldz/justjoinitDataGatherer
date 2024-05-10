@@ -2,38 +2,43 @@ import tkinter as tk
 from tkinter import filedialog
 import main
 
-actualDir = "./saves/save1"
-fileName = "all-locations.txt"
-saveDir = "saves/save1"
-configDirLabel = "config.json"
+actualDir = "./saves/save1"  # Default directory
+fileName = "all-locations.txt"  # Default filename
+saveDir = "saves/save1"  # Default save directory
+configDirLabel = "config.json"  # Default config directory
 
 def select_txt_file():
+    """Select a text file using a file dialog"""
     global fileName
     fileName = filedialog.askopenfilename(filetypes=[("Text files", "*.txt")])
     txtDirLabel.config(text=fileName)
 
 def select_config_file():
+    """Select a configuration file using a file dialog"""
     global configDir
     configDir = filedialog.askopenfilename(filetypes=[("Json files", "*.json")])
     configDirLabel.config(text=configDir)
 
 def select_folder_file():
+    """Select a folder using a folder dialog."""
     global saveDir
     saveDir = filedialog.askdirectory()
     folderDirLabel.config(text=saveDir)
 
-
 def drawGraphButton():
+    """Read data from selected file get graph colors and labels from selected configuration file and draw graph."""
     data = main.readData(fileName)
     colors, languages = main.getGraphColorsAndLabels(configDirLabel)
     main.drawGraph(colors, languages, data)
 
 def getDataButton():
+    """Get desired locations technologies and experience levels from selected configuration file and save data from websites."""
     LOCATIONS, TECHS, EXPERIENCE = main.getDesiredLanguagesTechsAndExperience(configDir)
     print(LOCATIONS, TECHS, EXPERIENCE)
     main.getAndSaveDataFromWebside(LOCATIONS, TECHS, EXPERIENCE, saveDir)
 
 def createGUI():
+    """Create GUI elements."""
     global txtDirLabel, configDirLabel, folderDirLabel
     select_button = tk.Button(root, text="Select .txt File", command=select_txt_file)
     select_button.grid(row=0, column=0,padx=10,pady=10)
