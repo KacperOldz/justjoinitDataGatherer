@@ -28,7 +28,7 @@ def select_folder_file():
 def drawGraphButton():
     """Read data from selected file get graph colors and labels from selected configuration file and draw graph."""
     data = main.readData(fileName)
-    colors, languages = main.getGraphColorsAndLabels(configDirLabel)
+    colors, languages = main.getGraphColorsAndLabels(configDir)
     main.drawGraph(colors, languages, data)
 
 def getDataButton():
@@ -55,13 +55,16 @@ def createGUI():
     folderDirLabel = tk.Label(root, text="directiory")
     folderDirLabel.grid(row=2, column=1, padx=10, pady=10)
 
-    execute_button = tk.Button(root, text="Draw Graph", command=drawGraphButton)
-    execute_button = tk.Button(root, text="Get Data", command=getDataButton)
+    draw_button = tk.Button(root, text="Draw Graph", command=drawGraphButton)
+    draw_button.grid(row=3,column=0,padx=10,pady=10)
+    save_button = tk.Button(root, text="Get Data", command=getDataButton)
+    save_button.grid(row=3,column=1,padx=10,pady=10)
+    root.mainloop()
+
 
 # Create the main window
 root = tk.Tk()
-root.title("Selectable List")
+root.title("JustJoin.it scrapper")
 
 # Run the GUI event loop
 createGUI()
-root.mainloop()
