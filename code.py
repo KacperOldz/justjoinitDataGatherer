@@ -95,15 +95,16 @@ def getGraphColorsAndLabels(dir):
     languages = [lang["label"] for lang in config["languages"]]
     return colors, languages
 
-def drawGraph(colors, languages, data):
+def drawGraph(colors, languages, data, offset = 0):
     """
-    :param colors: Colors array. 
+    :param colors: Colors array.
     :param languages: Languages array.
     :param data: Data array.
     """
+    offset = len(colors) * offset
     for j in range(0, len(colors)):
         x = [datetime.strptime(line[0], "%Y-%m-%d") for line in data]
-        y = [int(line[j+1]) for line in data]
+        y = [int(line[j+1+offset]) for line in data]
         plt.plot(x, y, color=colors[j], label=languages[j])
     plt.xlabel('Date')
     plt.ylabel('Amount')
@@ -113,7 +114,7 @@ def drawGraph(colors, languages, data):
 
 def readData(fileName):
     """
-    :param fileName: Name of file to read data from 
+    :param fileName: Name of file to read data from
     :return: Returns data array
     """
     data = []
@@ -123,4 +124,16 @@ def readData(fileName):
             elements = line.split()
             data.append([num for num in elements[0:len(elements)]])
     return data
+
+def getFiltersLabels(configDir):
+    """
+    :param configDir: directory of config file
+    :return: list of filter names
+    """
+    with open(configDir, 'r') as file:
+        json_data = file.read()
+        data = json.loads(json_data)
+    labels = [filter["label"] for filter in data["filters"]]
+    return labels
+
 
