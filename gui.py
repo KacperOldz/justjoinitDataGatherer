@@ -19,6 +19,13 @@ def select_config_file():
     configDir = filedialog.askopenfilename(filetypes=[("Json files", "*.json")])
     configDirLabel.config(text=configDir)
 
+    selected_option = tk.StringVar(root)
+    LOCATIONS, TECHS, options = main.getDesiredLanguagesTechsAndExperience(configDir)
+    selected_option.set(0)
+    filter_menu = tk.OptionMenu(root, selected_option, *options)
+    filter_menu.grid(row=3, column=0, padx=10, pady=10)
+
+
 def select_folder_file():
     """Select a folder using a folder dialog."""
     global saveDir
@@ -29,7 +36,7 @@ def drawGraphButton():
     """Read data from selected file get graph colors and labels from selected configuration file and draw graph."""
     data = main.readData(fileName)
     colors, languages = main.getGraphColorsAndLabels(configDir)
-    main.drawGraph(colors, languages, data)
+    main.drawGraph(colors, languages, data, 0)
 
 def getDataButton():
     """Get desired locations technologies and experience levels from selected configuration file and save data from websites."""
@@ -39,7 +46,7 @@ def getDataButton():
 
 def createGUI():
     """Create GUI elements."""
-    global txtDirLabel, configDirLabel, folderDirLabel
+    global txtDirLabel, configDirLabel, folderDirLabel, filter_menu
     select_button = tk.Button(root, text="Select .txt File", command=select_txt_file)
     select_button.grid(row=0, column=0,padx=10,pady=10)
     txtDirLabel = tk.Label(root, text="directiory")
@@ -56,14 +63,16 @@ def createGUI():
     folderDirLabel.grid(row=2, column=1, padx=10, pady=10)
 
     draw_button = tk.Button(root, text="Draw Graph", command=drawGraphButton)
-    draw_button.grid(row=3,column=0,padx=10,pady=10)
+    draw_button.grid(row=4,column=0,padx=10,pady=10)
     save_button = tk.Button(root, text="Get Data", command=getDataButton)
-    save_button.grid(row=3,column=1,padx=10,pady=10)
+    save_button.grid(row=4,column=1,padx=10,pady=10)
+
     root.mainloop()
 
 
 # Create the main window
 root = tk.Tk()
+root.geometry("700x200")
 root.title("JustJoin.it scrapper")
 
 # Run the GUI event loop
