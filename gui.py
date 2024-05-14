@@ -15,14 +15,15 @@ def select_txt_file():
 
 def select_config_file():
     """Select a configuration file using a file dialog"""
-    global configDir
+    global configDir, selected_option, labels
     configDir = filedialog.askopenfilename(filetypes=[("Json files", "*.json")])
     configDirLabel.config(text=configDir)
 
+    labels = main.getFiltersLabels(configDir)[::-1]
+
     selected_option = tk.StringVar(root)
-    LOCATIONS, TECHS, options = main.getDesiredLanguagesTechsAndExperience(configDir)
-    selected_option.set(0)
-    filter_menu = tk.OptionMenu(root, selected_option, *options)
+    selected_option.set(labels[0])
+    filter_menu = tk.OptionMenu(root, selected_option, *labels)
     filter_menu.grid(row=3, column=0, padx=10, pady=10)
 
 
@@ -36,7 +37,7 @@ def drawGraphButton():
     """Read data from selected file get graph colors and labels from selected configuration file and draw graph."""
     data = main.readData(fileName)
     colors, languages = main.getGraphColorsAndLabels(configDir)
-    main.drawGraph(colors, languages, data, 0)
+    main.drawGraph(colors, languages, data, labels.index(selected_option.get()))
 
 def getDataButton():
     """Get desired locations technologies and experience levels from selected configuration file and save data from websites."""
@@ -72,7 +73,6 @@ def createGUI():
 
 # Create the main window
 root = tk.Tk()
-root.geometry("700x200")
 root.title("JustJoin.it scrapper")
 
 # Run the GUI event loop
